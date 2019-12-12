@@ -1,0 +1,24 @@
+{
+  "name": "projects",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "api-mock": "^0.3.2",
+    "browser-sync": "^2.26.7",
+    "gulp": "^4.0.2",
+    "gulp-aglio": "0.0.14",
+    "gulp-ejs": "^5.0.0",
+    "gulp-rename": "^2.0.0",
+    "rimraf": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp",
+    "build": "gulp published",
+    "mock": "drakov -f published/index.md --public"
+  },
+  "author": "",
+  "license": "ISC"
+}
