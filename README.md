@@ -24,7 +24,6 @@ docker-compose exec api npm run build
 ## Directory Structure
 
 ```
-
 .
 ├── apidocs
 │   ├── layout.md
