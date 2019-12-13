@@ -15,10 +15,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "run-p start:*",
     "start:gulp": "gulp",
-    "start:mock": "drakov -f published/index.md --public"
+    "start:mock": "drakov -f published/index.md --public",
+    "build": "gulp build"
   },
   "author": "",
   "license": "ISC"
