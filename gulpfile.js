@@ -36,7 +36,7 @@ gulp.task('browserSync', function(callback) {
 });
 
 function watchFiles(callback) {
-  const browserReload = (callback) => {
+  const browserReload = () => {
     browserSync.reload();
     callback();
   };
