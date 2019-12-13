@@ -2,37 +2,27 @@ var gulp        = require('gulp'),
     aglio       = require('gulp-aglio'),
     browserSync = require('browser-sync'),
     rename      = require('gulp-rename'),
-    rimraf      = require('rimraf'),
-    ejs         = require('gulp-ejs'),
-    Drakov      = require('drakov');
-
-var reload = browserSync.reload;
+    ejs         = require('gulp-ejs');
 
 var TEMPLATE_FILES = ['apidocs/**/*.md'],
-    LAYOUT_FILE = 'apidocs/layout.md',
-    PUBLISHED_DIR = 'published';
+    LAYOUT_FILE    = 'apidocs/layout.md',
+    PUBLISHED_DIR  = 'published';
 
 gulp.task('combine', function() {
   return gulp.src(LAYOUT_FILE)
-    .pipe(ejs({},{ ext: '.md' }))
+    .pipe(ejs({},{},{ ext: '.md' }))
     .pipe(rename('index.md'))
     .pipe(gulp.dest(PUBLISHED_DIR));
 });
 
-gulp.task('generate-api-docs', function(callback) {
-  gulp.src(PUBLISHED_DIR + '/index.md')
+gulp.task('generate-api-docs', function() {
+  return gulp.src(PUBLISHED_DIR + '/index.md')
     .pipe(aglio({template: 'default'}))
     .pipe(gulp.dest(PUBLISHED_DIR));
-  callback();
 });
 
-
-gulp.task('watch', function () {
-  gulp.watch(TEMPLATE_FILES, gulp.task('generate-api-docs', reload))
-});
-
-gulp.task('browserSync', function(collback) {
-  browserSync({
+gulp.task('browserSync', function(callback) {
+  browserSync.init({
     logConnections: true,
     logFileChanges: true,
     notify: true,
@@ -42,7 +32,17 @@ gulp.task('browserSync', function(collback) {
       baseDir: PUBLISHED_DIR
     }
   });
-  collback();
+  callback();
 });
 
-gulp.task('default', gulp.series('combine', 'generate-api-docs', gulp.parallel('watch', 'browserSync')));
+function watchFiles(callback) {
+  const browserReload = (callback) => {
+    browserSync.reload();
+    callback();
+  };
+
+  gulp.watch(TEMPLATE_FILES).on('change', gulp.series('combine', 'generate-api-docs', browserReload));
+}
+
+gulp.task('default', gulp.series('browserSync', watchFiles));
+gulp.task('build', gulp.series('combine', 'generate-api-docs', 'browserSync'));
