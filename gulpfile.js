@@ -4,7 +4,6 @@ var gulp        = require('gulp'),
     rename      = require('gulp-rename'),
     rimraf      = require('rimraf'),
     ejs         = require('gulp-ejs'),
-    ApiMock     = require('api-mock'),
     Drakov      = require('drakov');
 
 var reload = browserSync.reload;
@@ -46,20 +45,4 @@ gulp.task('browserSync', function(collback) {
   collback();
 });
 
-gulp.task('api-mock', function () {
-  var mockServer = new Drakov({
-    blueprintPath: PUBLISHED_DIR + '/index.md',
-    options: {
-      port: 3000
-    }
-  });
-  mockServer.run();
-});
-
-// gulp.task('clean', function(callback) {
-//   rimraf(PUBLISHED_DIR, callback());
-// });
-
-// gulp.task('published', gulp.series('generate-api-docs'));
 gulp.task('default', gulp.series('combine', 'generate-api-docs', gulp.parallel('watch', 'browserSync')));
-gulp.task('published', gulp.series('api-mock'));
